@@ -32,7 +32,7 @@ URI templates for provenance entity types:
 
 URI templates for entity types that represent attributes of one or more entity types (e.g. the name of a project, the identifier of a digital object, etc.):
 
-- *name* (appellation)
+- *appellation* (name)
     - pattern: `{base URI}/{entity type}/{id of the instance}/appellation/{appellation id}`
     - instance example:  https://resource.swissartresearch.net/prov/project/1234/appellation/5678
     - applies to entity types: ...
@@ -44,6 +44,8 @@ URI templates for entity types that represent attributes of one or more entity t
     - pattern: `{base URI}/{entity type}/{id of the instance}/source`
     - instance example:  https://resource.swissartresearch.net/prov/similaritystatus/1234/target
     - applies to entity types: similarity
+- *linguistic object* (description)
+    - ...
 
 
 
@@ -63,7 +65,7 @@ URI templates for entity types that represent attributes of one or more entity t
  {  
     // The project that constitutes the context 
     "project":{
-        "id": "project/1234",
+        "id": "Project identifier",
         "name": "Name of the project",
         "description": "Description of the project",
         "url": "URL of the project",
@@ -155,11 +157,29 @@ URI templates for entity types that represent attributes of one or more entity t
 Fields applying to any pipeline step:
  - *Type*: The type of the pipeline step (LAF.11)
  - *Label*: A label identifying the pipeline step (TBD)
- - *Description*: A textual description of the pipeline step (TBD)
+ - *Description*: A brief description of the pipeline step (TBD)
  - *Timestamp – begin*: The timestamp of the date when a given pipeline step started (LAF.25)
  - *Timestamp – end*: The timestamp of the date when a given pipeline step ended (LAF.26)
  - *Part of project*: The project within which the pipeline step was carried out (LAF.42)
  - *Dependency*: The subsequent step in the pipeline sequence (ANTF.3)
+
+ **JSON schema:**
+ ```json
+{
+    "pipeline_steps": [
+        {
+            "id": "A unique identifier for the pipeline step",
+            "type": "The type of the pipeline step",
+            "label": "A label identifying the pipeline step",
+            "description": "A brief description of the pipeline step",
+            "timestamp-begin": "The timestamp of the date when a given pipeline step started",
+            "timestamp-end": "The timestamp of the date when a given pipeline step ended",
+            "part-of-project": "The (ID of the) project within which the pipeline step was carried out",
+            "dependency": "The (ID of the) subsequent step in the pipeline sequence"
+        }
+    ]
+}
+ ```
  
 ### Labeling
 
@@ -179,16 +199,17 @@ Fields applying to any pipeline step:
 {
     "pipeline_steps": [
         {
-            "type": "",
-            "label": "",
-            "description": "",
-            "timestamp-begin": "",
-            "timestamp-end": "",
-            "part-of-project": "", // ID of the containing project
-            "dependency": "", // ID of the following step in the pipeline
-            "uses-tool": "",
+            // all applicable generic fields here
             "has-input": "",
-            "has-output": "" 
+            "has-output": "",
+            "annotators": [
+                {
+                    "id": "",
+                    "name": ""
+                }
+            ],
+            "uses-tool": "",
+            "uses-platform": ""
         }
     ]
 }
@@ -199,16 +220,26 @@ Fields applying to any pipeline step:
  {
     "pipeline_steps": [
         {
+            "id": "digitalreading/1234",
             "type": "labeling",
             "label": "BSO Image Labeling",
-            "description": "",
+            "description": "Images are manually labelled as `landscape` or `not landscape`.",
             "timestamp-begin": "2023-05-12T10:15:30Z",
             "timestamp-end": "2023-05-31T10:15:30Z",
-            "part-of-project": "project/1234", // ID of the containing project
-            "dependency": "", // ID of the following step in the pipeline
-            "uses-tool": "",
-            "has-input": "",
-            "has-output": "" 
+            "part-of-project": "project/1234",
+            "dependency": "digitalreading/45678",
+            "has-input": {
+                "id": "digitalobject/1234",
+                "description": "Folder containing downloaded images",
+                "label": "images/",
+                "url": "https://raw.githubusercontent.com/swiss-art-research-net/bso-image-classification/refs/heads/main/images/"
+            },
+            "has-output": {
+                "id": "digitalobject/5678",
+                "description": "CSV file containing labeled image classifications",
+                "label": "data/imageAnnotations.csv",
+                "url": "https://raw.githubusercontent.com/swiss-art-research-net/bso-image-classification/refs/heads/main/data/imageAnnotations.csv"
+            }
         }
     ]
 }
@@ -216,14 +247,105 @@ Fields applying to any pipeline step:
 
 **Turtle example:**
 ```turtle
-TBD
+@prefix aaao: <https://ontology.swissartresearch.net/aaao/> .
+@prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix crmdig: <http://www.ics.forth.gr/isl/CRMdig/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://resource.swissartresearch.net/prov/digitalreading/1234> a aaao:ZE17_Digital_Reading ;
+    rdfs:label "BSO Image Labeling" ;
+    crm:L10_had_input <https://resource.swissartresearch.net/prov/digitalobject/1234> ;
+    crm:L11_had_output <https://resource.swissartresearch.net/prov/digitalobject/5678> ;
+    crm:P20_had_specific_purpose <https://resource.swissartresearch.net/prov/digitalreading/5678> ;
+    crm:P2_has_type <https://example.swissartresearch.net/type/11_1> ;
+    crm:P4_has_time-span <https://resource.swissartresearch.net/prov/digitalreading/1234/timestamp> ;
+    crm:P9i_forms_part_of <https://resource.swissartresearch.net/prov/project/1234>.
+
+# the digital objects used as input by the labelling step of the BSO pipeline
+<https://resource.swissartresearch.net/prov/digitalobject/1234> a crmdig:D1_digital_object ;
+    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/digitalobject/1234/linguisticobject/1> ;
+    rdfs:label "images/" .
+
+<https://resource.swissartresearch.net/prov/digitalobject/1234/linguisticobject/1> a crm:E33_Linguistic_Object ;
+    crm:P190_has_symbolic_content "Folder containing downloaded images" .
+
+# the digital object produced as output by the labelling step of the BSO pipeline
+<https://resource.swissartresearch.net/prov/digitalobject/5678> a crmdig:D1_Digital_Object ;
+    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/digitalobject/5678/linguisticobject/1> ;
+    rdfs:label "data/imageAnnotations.csv" .
+
+<https://resource.swissartresearch.net/prov/digitalobject/5678/linguisticobject/1> a crm:E33_Linguistic_Object ;
+    crm:P190_has_symbolic_content "CSV file containing labeled image classifications" .
+
+# The timestamp of the date when the labelling step of the BSO pipeline started and ended
+<https://resource.swissartresearch.net/prov/digitalreading/1234/timestamp> a crm:E52_Time-Span ;
+    crm:P82a_begin_of_the_begin "2023-05-12T10:15:30Z" ;
+    crm:P82b_end_of_the_end "2023-05-31T10:15:30Z" .
+
+<https://example.swissartresearch.net/type/11_1> a crm:E55_Type .
 ```
 
 ### Model training
 
+ **Intermediate JSON:**
+ ```json
+ {
+    "pipeline_steps": [
+        {
+            "id": "digitalreading/5678",
+            "type": "model-training",
+            "label": "BSO Model Training",
+            "description": "Training of an image classification model for BSO data.",
+            "timestamp-begin": "2023-05-12T10:15:30Z",
+            "timestamp-end": "2023-05-12T10:19:30Z",
+            "part-of-project": "project/1234",
+            "dependency": "pipelinestep/91011", 
+            "code": {
+                "id": "",
+                "description": "",
+                "label": "",
+                "url": ""
+            },
+            "has-input": "digitalobject/5678",
+            "has-output": {
+                "id": "digitalobject/91011",
+                "description": "Image classification model trained on manually labelled BSO data.",
+                "label": "model.pkl",
+                "url": "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/models/model.pkl"
+            } 
+        }
+    ]
+}
+ ```
+
 ### Data transformation
 
 ### Prediction
+
+**Intermediate JSON:**
+ ```json
+ {
+    "pipeline_steps": [
+        {
+            "id": "pipelinestep/91011",
+            "type": "prediction",
+            "label": "BSO Prediction",
+            "description": "Prediction of image classes on unseen data.",
+            "timestamp-begin": "2023-05-12T10:15:30Z",
+            "timestamp-end": "2023-05-12T10:19:30Z",
+            "part-of-project": "project/1234",
+            "model": "digitalobject/91011",
+            "has-input": "digitalobject/1234",
+            "has-output": {
+                "id": "",
+                "description": "",
+                "label": "",
+                "url": ""
+            }
+        }
+    ]
+}
+ ```
 
 ## Types of predictions
 
