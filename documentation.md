@@ -40,6 +40,12 @@ URI templates for entity types that represent attributes of one or more entity t
     - pattern: `{base URI}/{entity type}/{id of the instance}/appellation/{appellation id}`
     - instance example:  https://resource.swissartresearch.net/prov/project/1234/appellation/5678
     - applies to entity types: ...
+- *linguistic object* (description)
+    - pattern: `{base URI}/{entity type}/{id of the instance}/linguisticobject/{linguistic object id}`
+    - instance example:  https://resource.swissartresearch.net/prov/project/1234/linguisticobject/1
+    - applies to entity types: ...
+- *identifier* (e.g. URL)
+    - ...
 - *target*
     - pattern: `{base URI}/{entity type}/{id of the instance}/target`
     - instance example:  https://resource.swissartresearch.net/prov/classificatorystatus/1234/target
@@ -48,10 +54,6 @@ URI templates for entity types that represent attributes of one or more entity t
     - pattern: `{base URI}/{entity type}/{id of the instance}/source`
     - instance example:  https://resource.swissartresearch.net/prov/similaritystatus/1234/target
     - applies to entity types: similarity
-- *linguistic object* (description)
-    - ...
-- *identifier* (e.g. URL)
-    - ...
 
 
 
