@@ -21,6 +21,10 @@ URI templates for provenance entity types:
     - pattern: `{base URI}/digitalobject/`
     - base URI for entity type: https://resource.swissartresearch.net/prov/digitalobject/
     - instance example:  https://resource.swissartresearch.net/prov/digitalobject/1234
+- *software*
+    - pattern: `{base URI}/software/`
+    - base URI for entity type: https://resource.swissartresearch.net/prov/software/
+    - instance example:  https://resource.swissartresearch.net/prov/software/1234
 - *classification*
     - pattern: `{base URI}/classificatorystatus/`
     - base URI for entity type: https://resource.swissartresearch.net/prov/classificatorystatus/
@@ -45,6 +49,8 @@ URI templates for entity types that represent attributes of one or more entity t
     - instance example:  https://resource.swissartresearch.net/prov/similaritystatus/1234/target
     - applies to entity types: similarity
 - *linguistic object* (description)
+    - ...
+- *identifier* (e.g. URL)
     - ...
 
 
@@ -183,16 +189,16 @@ Fields applying to any pipeline step:
  
 ### Labeling
 
-**Description**: The step in a digital reading pipeline that involves creating manually labelled examples for evaluation or training a machine learning model.
+**Description**: The step in a digital reading pipeline that involves creating manually labelled examples for evaluating or training a machine learning model.
 
 **Additional fields:**
  - *Tool*: The digital tool to perform data labeling (SEMF.133) 
  - *Input*: The input digital objects (e.g. texts, images, etc.) on which labeling is performed (SEMF.35)
  - *Output*: A collection of manually labeled digital objects. The type of labels directly depends on the ML task at hand (SEMF.34)
- - *Log file*:
- - *Annotator*:
- - *Tool*:
- - *Platform used*:
+ - *Log file*: Optionally, the labeling process may produce a log file where system and user actions are logged (ANTF.1)
+ - *Annotator*: The human annotator(s) involved in the labeling process (LAF.21)
+ - *Tool*: The digital tool to perform data labeling (SEMF.133)
+ - *Platform used*: The platform where a given tool is hosted and offered as a service (TBD)
 
  **JSON schema:**
  ```json
@@ -287,6 +293,15 @@ Fields applying to any pipeline step:
 
 ### Model training
 
+**Description**: The step of a digital reading pipeline that consists in training a machine learning statistical model for performing a given task, typically by means of a manually labelled dataset. 
+
+**Additional fields:**
+ - *Input*: The labeled data (e.g. texts, images, etc.) that was used to train the model (SEMF.35)
+ - *Output*: The trained model produced (SEMF.34)
+ - *Log file*: Optionally, the model training process may produce a log file (ANTF.1)
+ - *Code*: Script/notebook used to train the model. (SEMF.133)
+ - *Service*: External platform used to train the model (e.g. Roboflow Train) (TBD)
+
  **Intermediate JSON:**
  ```json
  {
@@ -295,16 +310,16 @@ Fields applying to any pipeline step:
             "id": "digitalreading/5678",
             "type": "model-training",
             "label": "BSO Model Training",
-            "description": "Training of an image classification model for BSO data.",
+            "description": "The model training follows the approach described in https://towardsdatascience.com/image-classification-using-fastai-v2-on-colab-33f3ebe9b5a3. For training using a GPU (if none is available locally), Google Colab can be used.",
             "timestamp-begin": "2023-05-12T10:15:30Z",
             "timestamp-end": "2023-05-12T10:19:30Z",
             "part-of-project": "project/1234",
-            "dependency": "pipelinestep/91011", 
+            "dependency": "digitalreading/91011", 
             "code": {
-                "id": "",
-                "description": "",
-                "label": "",
-                "url": ""
+                "id": "digitalobject/101112",
+                "description": "The Jupyter notebooked used to train the model.",
+                "label": "model training.ipynb",
+                "url": "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/notebooks/model%20training.ipynb"
             },
             "has-input": "digitalobject/5678",
             "has-output": {
@@ -318,29 +333,102 @@ Fields applying to any pipeline step:
 }
  ```
 
+ **Turtle example:**
+```turtle
+@prefix aaao: <https://ontology.swissartresearch.net/aaao/> .
+@prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix crmdig: <http://www.ics.forth.gr/isl/CRMdig/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# the model training step in the BSO digital reading pipeline
+<https://resource.swissartresearch.net/prov/digitalreading/5678> a crmdig:D7_Digital_Machine_Event ;
+    rdfs:label "BSO Model Training" ;
+    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/digitalreading/5678/linguisticobject/1> ;
+    crm:L10_had_input <https://resource.swissartresearch.net/prov/digitalobject/5678> ;
+    crm:L11_had_output <https://resource.swissartresearch.net/prov/digitalobject/91011> ;
+    crm:L23_used_software_or_firmware <https://resource.swissartresearch.net/prov/software/1234> ;
+    crm:P20_had_specific_purpose <https://resource.swissartresearch.net/prov/digitalreading/XYZ> ;
+    crm:P2_has_type <https://example.swissartresearch.net/type/11_1> ;
+    crm:P4_has_time-span <https://resource.swissartresearch.net/prov/digitalreading/5678/timestamp> ;
+    crm:P9i_forms_part_of <https://resource.swissartresearch.net/prov/project/1234>.
+
+# description of the BSO model training step
+<https://resource.swissartresearch.net/prov/digitalreading/5678/linguisticobject/1> a crm:E33_Linguistic_Object ;
+    crm:P190_has_symbolic_content "The model training follows the approach described in https://towardsdatascience.com/image-classification-using-fastai-v2-on-colab-33f3ebe9b5a3. For training using a GPU (if none is available locally), Google Colab can be used." .
+
+# The timestamp of the date when the model training step of the BSO pipeline started and ended
+<https://resource.swissartresearch.net/prov/digitalreading/5678/timestamp> a crm:E52_Time-Span ;
+    crm:P82a_begin_of_the_begin "2023-05-12T10:15:30Z" ;
+    crm:P82b_end_of_the_end "2023-05-12T10:19:30Z" .
+
+# the trained model produced
+<https://resource.swissartresearch.net/prov/digitalobject/91011> a crmdig:D1_Digital_Object ;
+    crm:P1_is_identified_by <https://resource.swissartresearch.net/prov/digitalobject/91011/identifier/1> ;
+    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/digitalobject/91011/linguisticobject/1> ;
+    rdfs:label "model.pkl" .
+
+# description of the trained model
+<https://resource.swissartresearch.net/prov/digitalobject/91011/linguisticobject/1> a crm:E33_Linguistic_Object ;
+    crm:P190_has_symbolic_content "Image classification model trained on manually labelled BSO data." .
+
+# URL of the trained model
+<https://resource.swissartresearch.net/prov/digitalobject/91011/identifier/1> a crm:E42_Identifier ; 
+    crm:P190_has_symbolic_content "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/models/model.pkl" ;
+    crm:P2_has_type <https://vocab.getty.edu/aat/300404630> .
+
+# Notebook used to train the model
+<https://resource.swissartresearch.net/prov/software/1234> crmdig:D14_Software ;
+    rdfs:label "model training.ipynb" ;
+    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/software/1234/linguisticobject/1> .
+
+# Description of the notebook
+<https://resource.swissartresearch.net/prov/software/1234/linguisticobject/1> a crm:E33_Linguistic_Object ;
+    crm:P190_has_symbolic_content "Image classification model trained on manually labelled BSO data." .
+
+# URL of the notebook
+<https://resource.swissartresearch.net/prov/software/1234/identifier/1> a crm:E42_Identifier ; 
+    crm:P190_has_symbolic_content "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/notebooks/model%20training.ipynb" ;
+    crm:P2_has_type <https://vocab.getty.edu/aat/300404630> .
+
+<https://example.swissartresearch.net/type/11_1> a crm:E55_Type .
+
+<https://vocab.getty.edu/aat/300404630> a crm:E55_Type ;
+    rdfs:label "URL" .
+```
+
 ### Data transformation
 
 ### Prediction
+
+**Description:** The step of a digital reading pipeline at which a statistical machine learning model makes predictions on unseen data.
+
+**Additional fields:**
+- *Input data*: A set of input digital objects (SEMF.35)
+- *Output*: Digital object (file) containing the model's predictions (SEMF.34)
+- *Log file*: Optionally, the prediction process may produce a log file (ANTF.1)
+- *Code*: Script/notebook used to obtain the predictions (SEMF.133)
+- *Model*: The trained model used to generate predictions (SEMF.35)
+- *API*: External API service used to obtain the predictions, as an alternative to a (local) model (TBD).
 
 **Intermediate JSON:**
  ```json
  {
     "pipeline_steps": [
         {
-            "id": "pipelinestep/91011",
+            "id": "digitalreading/91011",
             "type": "prediction",
             "label": "BSO Prediction",
-            "description": "Prediction of image classes on unseen data.",
+            "description": "Prediction of image classes on unseen data from the BSO project.",
             "timestamp-begin": "2023-05-12T10:15:30Z",
             "timestamp-end": "2023-05-12T10:19:30Z",
             "part-of-project": "project/1234",
             "model": "digitalobject/91011",
-            "has-input": "digitalobject/1234",
+            "has-input-data": "digitalobject/1234",
             "has-output": {
-                "id": "",
-                "description": "",
-                "label": "",
-                "url": ""
+                "id": "digitalobject/101112",
+                "description": "The file where the image classification results are written.",
+                "label": "output/predictions.csv",
+                "url": "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/output/predictions.csv"
             }
         }
     ]
