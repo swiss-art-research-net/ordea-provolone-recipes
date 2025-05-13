@@ -2,57 +2,57 @@
 
 ## Templates for provenance-related URIs
 
-**Provenance Base URI:** https://resource.swissartresearch.net/prov/
+**Base URI:** https://resource.swissartresearch.net/
 
-other possibility: `https://resource.swissartresearch.net/{entity type}/prov/`
+**Base URI for examples:** https://examples.swissartresearch.net/
 
 URI templates for provenance entity types:
 - *project*
     - applies to instances of: `PE35 Project`
     - pattern: `{base URI}/project/{project id}`
-    - base URI for entity type: https://resource.swissartresearch.net/prov/project/
-    - instance example:  https://resource.swissartresearch.net/prov/project/1234
+    - base URI for entity type: https://examples.swissartresearch.net/project/
+    - instance example:  https://examples.swissartresearch.net/project/1234
 - *digital reading pipeline step*
     - applies to instances of: `ZE17 Digital Reading`
     - pattern: `{base URI}/digitalreading/`
-    - base URI for entity type: https://resource.swissartresearch.net/prov/digitalreading/
-    - instance example:  https://resource.swissartresearch.net/prov/digitalreading/1234
+    - base URI for entity type: https://examples.swissartresearch.net/digitalreading/
+    - instance example:  https://examples.swissartresearch.net/digitalreading/1234
 - *digital object*
     - pattern: `{base URI}/digitalobject/`
-    - base URI for entity type: https://resource.swissartresearch.net/prov/digitalobject/
-    - instance example:  https://resource.swissartresearch.net/prov/digitalobject/1234
+    - base URI for entity type: https://examples.swissartresearch.net/digitalobject/
+    - instance example:  https://examples.swissartresearch.net/digitalobject/1234
 - *software*
     - pattern: `{base URI}/software/`
-    - base URI for entity type: https://resource.swissartresearch.net/prov/software/
-    - instance example:  https://resource.swissartresearch.net/prov/software/1234
+    - base URI for entity type: https://examples.swissartresearch.net/software/
+    - instance example:  https://examples.swissartresearch.net/software/1234
 - *classification*
     - pattern: `{base URI}/classificatorystatus/`
-    - base URI for entity type: https://resource.swissartresearch.net/prov/classificatorystatus/
-    - instance example:  https://resource.swissartresearch.net/prov/classificatorystatus/1234
+    - base URI for entity type: https://examples.swissartresearch.net/classificatorystatus/
+    - instance example:  https://examples.swissartresearch.net/classificatorystatus/1234
 - *similarity*
     - pattern: `{base URI}/similaritystatus/`
-    - base URI for entity type: https://resource.swissartresearch.net/prov/similaritystatus/
-    - instance example:  https://resource.swissartresearch.net/prov/similaritystatus/1234
+    - base URI for entity type: https://examples.swissartresearch.net/similaritystatus/
+    - instance example:  https://examples.swissartresearch.net/similaritystatus/1234
 
 URI templates for entity types that represent attributes of one or more entity types (e.g. the name of a project, the identifier of a digital object, etc.):
 
 - *appellation* (name)
     - pattern: `{base URI}/{entity type}/{id of the instance}/appellation/{appellation id}`
-    - instance example:  https://resource.swissartresearch.net/prov/project/1234/appellation/5678
+    - instance example:  https://examples.swissartresearch.net/project/1234/appellation/5678
     - applies to entity types: ...
 - *linguistic object* (description)
     - pattern: `{base URI}/{entity type}/{id of the instance}/linguisticobject/{linguistic object id}`
-    - instance example:  https://resource.swissartresearch.net/prov/project/1234/linguisticobject/1
+    - instance example:  https://examples.swissartresearch.net/project/1234/linguisticobject/1
     - applies to entity types: ...
 - *identifier* (e.g. URL)
     - ...
 - *target*
     - pattern: `{base URI}/{entity type}/{id of the instance}/target`
-    - instance example:  https://resource.swissartresearch.net/prov/classificatorystatus/1234/target
+    - instance example:  https://examples.swissartresearch.net/classificatorystatus/1234/target
     - applies to entity types: classification, similarity
 - *source*
     - pattern: `{base URI}/{entity type}/{id of the instance}/source`
-    - instance example:  https://resource.swissartresearch.net/prov/similaritystatus/1234/target
+    - instance example:  https://examples.swissartresearch.net/similaritystatus/1234/target
     - applies to entity types: similarity
 
 
@@ -115,34 +115,34 @@ URI templates for entity types that represent attributes of one or more entity t
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 # Project: A project is the context within which a digital reading pipeline is created and implemented (ANTM.15)
-<https://resource.swissartresearch.net/prov/project/1234> a crmpe:PE35_Project ;
+<https://examples.swissartresearch.net/project/1234> a crmpe:PE35_Project ;
     crm:P01i_is_domain_of <https://example.swissartresearch.net/property/SRDF.129_1> ;
     crm:P02i_is_range_of <https://example.swissartresearch.net/reified_property/SRDF.369_1> ;
-    crm:P1_is_identified_by <https://resource.swissartresearch.net/prov/project/1234/appellation/1> ;
-    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/project/1234/linguisticobject/1> .
+    crm:P1_is_identified_by <https://examples.swissartresearch.net/project/1234/appellation/1> ;
+    crm:P67i_is_referred_to_by <https://examples.swissartresearch.net/project/1234/linguisticobject/1> .
 
 #Actor: A person or institution participating to he project (SRDF.129)
-<https://resource.swissartresearch.net/prov/person/1> a crm:E39_Actor ;
-    crm:P1_is_identified_by <https://resource.swissartresearch.net/prov/person/1/appellation/1> .
+<https://examples.swissartresearch.net/person/1> a crm:E39_Actor ;
+    crm:P1_is_identified_by <https://examples.swissartresearch.net/person/1/appellation/1> .
 
-<https://resource.swissartresearch.net/prov/person/1/appellation/1> a crm:E33_E41_Linguistic_Appellation ;
+<https://examples.swissartresearch.net/person/1/appellation/1> a crm:E33_E41_Linguistic_Appellation ;
     crm:P190_has_symbolic_content "Florian Kräutli" .
 
 # Description: A description of the project (LAF.15)
-<https://resource.swissartresearch.net/prov/project/1234/linguisticobject/1> a crm:E33_Linguistic_Object ;
+<https://examples.swissartresearch.net/project/1234/linguisticobject/1> a crm:E33_Linguistic_Object ;
     crm:P190_has_symbolic_content "The »Bilder der Schweiz online« (Images of Switzerland) initiative is a three-year project at the University of Zurich (2020-2022), jointly undertaken by Swiss Art Research Infrastructure (SARI) and the lecturer for Swiss Art and Museology at the Institute of Art History at the University of Zurich. " .
 
 # Name: The name of the project (LAF.6)
-<https://resource.swissartresearch.net/prov/project/1234/appellation/1> a crm:E33_E41_Linguistic_Appellation ;
+<https://examples.swissartresearch.net/project/1234/appellation/1> a crm:E33_E41_Linguistic_Appellation ;
     crm:P190_has_symbolic_content "Bilder der Schweiz Online (BSO)" .
 
 # Actor: A person or institution participating to the project (SRDF.129) -->
 <https://example.swissartresearch.net/property/SRDF.129_1> a crm:PC14_carried_out_by ;
-    crm:P02_has_range <https://resource.swissartresearch.net/prov/person/1> ;
-    crm:P14.1_in_the_role_of <https://resource.swissartresearch.net/prov/person/1/role/1> .
+    crm:P02_has_range <https://examples.swissartresearch.net/person/1> ;
+    crm:P14.1_in_the_role_of <https://examples.swissartresearch.net/person/1/role/1> .
 
 # Actor role: The role played by a given person or institution in the project (SRDF.130) -->
-<https://resource.swissartresearch.net/prov/person/1/role/1> a crm:E55_Type ;
+<https://examples.swissartresearch.net/person/1/role/1> a crm:E55_Type ;
     rdfs:label "Knowledge Graph Engineer" . 
 
 <https://example.swissartresearch.net/reified_property/SRDF.369_1> a crm:PC67_refers_to ;
@@ -159,6 +159,14 @@ URI templates for entity types that represent attributes of one or more entity t
 
 **Claude's plain text description generated from the example above:**
 > The RDF snippet describes "Bilder der Schweiz Online (BSO)" or "Images of Switzerland," a three-year project (2020-2022) conducted at the University of Zurich. This initiative was a collaborative effort between the Swiss Art Research Infrastructure (SARI) and the lecturer for Swiss Art and Museology at the University's Institute of Art History. Florian Kräutli participated in the project as a Knowledge Graph Engineer, indicating his specialized role in developing semantic data structures. The project appears to serve as a framework for creating and implementing a digital reading pipeline, likely focused on Swiss art resources. Additional information about this initiative is available through a digital resource at https://www.sari.uzh.ch/en/Projects/bilder-der-schweiz-online.html.
+
+## Digital object
+
+**Description:** Any digital object that is consumed/generated/used by a digital reading pipeline.
+
+**Fields:**
+- ...
+- ...
 
 ## Steps of a digital reading pipeline
 
@@ -260,33 +268,33 @@ Fields applying to any pipeline step:
 @prefix crmdig: <http://www.ics.forth.gr/isl/CRMdig/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-<https://resource.swissartresearch.net/prov/digitalreading/1234> a aaao:ZE17_Digital_Reading ;
+<https://examples.swissartresearch.net/digitalreading/1234> a aaao:ZE17_Digital_Reading ;
     rdfs:label "BSO Image Labeling" ;
-    crm:L10_had_input <https://resource.swissartresearch.net/prov/digitalobject/1234> ;
-    crm:L11_had_output <https://resource.swissartresearch.net/prov/digitalobject/5678> ;
-    crm:P20_had_specific_purpose <https://resource.swissartresearch.net/prov/digitalreading/5678> ;
+    crm:L10_had_input <https://examples.swissartresearch.net/digitalobject/1234> ;
+    crm:L11_had_output <https://examples.swissartresearch.net/digitalobject/5678> ;
+    crm:P20_had_specific_purpose <https://examples.swissartresearch.net/digitalreading/5678> ;
     crm:P2_has_type <https://example.swissartresearch.net/type/11_1> ;
-    crm:P4_has_time-span <https://resource.swissartresearch.net/prov/digitalreading/1234/timestamp> ;
-    crm:P9i_forms_part_of <https://resource.swissartresearch.net/prov/project/1234>.
+    crm:P4_has_time-span <https://examples.swissartresearch.net/digitalreading/1234/timestamp> ;
+    crm:P9i_forms_part_of <https://examples.swissartresearch.net/project/1234>.
 
 # the digital objects used as input by the labelling step of the BSO pipeline
-<https://resource.swissartresearch.net/prov/digitalobject/1234> a crmdig:D1_digital_object ;
-    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/digitalobject/1234/linguisticobject/1> ;
+<https://examples.swissartresearch.net/digitalobject/1234> a crmdig:D1_digital_object ;
+    crm:P67i_is_referred_to_by <https://examples.swissartresearch.net/digitalobject/1234/linguisticobject/1> ;
     rdfs:label "images/" .
 
-<https://resource.swissartresearch.net/prov/digitalobject/1234/linguisticobject/1> a crm:E33_Linguistic_Object ;
+<https://examples.swissartresearch.net/digitalobject/1234/linguisticobject/1> a crm:E33_Linguistic_Object ;
     crm:P190_has_symbolic_content "Folder containing downloaded images" .
 
 # the digital object produced as output by the labelling step of the BSO pipeline
-<https://resource.swissartresearch.net/prov/digitalobject/5678> a crmdig:D1_Digital_Object ;
-    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/digitalobject/5678/linguisticobject/1> ;
+<https://examples.swissartresearch.net/digitalobject/5678> a crmdig:D1_Digital_Object ;
+    crm:P67i_is_referred_to_by <https://examples.swissartresearch.net/digitalobject/5678/linguisticobject/1> ;
     rdfs:label "data/imageAnnotations.csv" .
 
-<https://resource.swissartresearch.net/prov/digitalobject/5678/linguisticobject/1> a crm:E33_Linguistic_Object ;
+<https://examples.swissartresearch.net/digitalobject/5678/linguisticobject/1> a crm:E33_Linguistic_Object ;
     crm:P190_has_symbolic_content "CSV file containing labeled image classifications" .
 
 # The timestamp of the date when the labelling step of the BSO pipeline started and ended
-<https://resource.swissartresearch.net/prov/digitalreading/1234/timestamp> a crm:E52_Time-Span ;
+<https://examples.swissartresearch.net/digitalreading/1234/timestamp> a crm:E52_Time-Span ;
     crm:P82a_begin_of_the_begin "2023-05-12T10:15:30Z" ;
     crm:P82b_end_of_the_end "2023-05-31T10:15:30Z" .
 
@@ -343,52 +351,52 @@ Fields applying to any pipeline step:
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 # the model training step in the BSO digital reading pipeline
-<https://resource.swissartresearch.net/prov/digitalreading/5678> a crmdig:D7_Digital_Machine_Event ;
+<https://examples.swissartresearch.net/digitalreading/5678> a crmdig:D7_Digital_Machine_Event ;
     rdfs:label "BSO Model Training" ;
-    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/digitalreading/5678/linguisticobject/1> ;
-    crm:L10_had_input <https://resource.swissartresearch.net/prov/digitalobject/5678> ;
-    crm:L11_had_output <https://resource.swissartresearch.net/prov/digitalobject/91011> ;
-    crm:L23_used_software_or_firmware <https://resource.swissartresearch.net/prov/software/1234> ;
-    crm:P20_had_specific_purpose <https://resource.swissartresearch.net/prov/digitalreading/XYZ> ;
+    crm:P67i_is_referred_to_by <https://examples.swissartresearch.net/digitalreading/5678/linguisticobject/1> ;
+    crm:L10_had_input <https://examples.swissartresearch.net/digitalobject/5678> ;
+    crm:L11_had_output <https://examples.swissartresearch.net/digitalobject/91011> ;
+    crm:L23_used_software_or_firmware <https://examples.swissartresearch.net/software/1234> ;
+    crm:P20_had_specific_purpose <https://examples.swissartresearch.net/digitalreading/XYZ> ;
     crm:P2_has_type <https://example.swissartresearch.net/type/11_1> ;
-    crm:P4_has_time-span <https://resource.swissartresearch.net/prov/digitalreading/5678/timestamp> ;
-    crm:P9i_forms_part_of <https://resource.swissartresearch.net/prov/project/1234>.
+    crm:P4_has_time-span <https://examples.swissartresearch.net/digitalreading/5678/timestamp> ;
+    crm:P9i_forms_part_of <https://examples.swissartresearch.net/project/1234>.
 
 # description of the BSO model training step
-<https://resource.swissartresearch.net/prov/digitalreading/5678/linguisticobject/1> a crm:E33_Linguistic_Object ;
+<https://examples.swissartresearch.net/digitalreading/5678/linguisticobject/1> a crm:E33_Linguistic_Object ;
     crm:P190_has_symbolic_content "The model training follows the approach described in https://towardsdatascience.com/image-classification-using-fastai-v2-on-colab-33f3ebe9b5a3. For training using a GPU (if none is available locally), Google Colab can be used." .
 
 # The timestamp of the date when the model training step of the BSO pipeline started and ended
-<https://resource.swissartresearch.net/prov/digitalreading/5678/timestamp> a crm:E52_Time-Span ;
+<https://examples.swissartresearch.net/digitalreading/5678/timestamp> a crm:E52_Time-Span ;
     crm:P82a_begin_of_the_begin "2023-05-12T10:15:30Z" ;
     crm:P82b_end_of_the_end "2023-05-12T10:19:30Z" .
 
 # the trained model produced
-<https://resource.swissartresearch.net/prov/digitalobject/91011> a crmdig:D1_Digital_Object ;
-    crm:P1_is_identified_by <https://resource.swissartresearch.net/prov/digitalobject/91011/identifier/1> ;
-    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/digitalobject/91011/linguisticobject/1> ;
+<https://examples.swissartresearch.net/digitalobject/91011> a crmdig:D1_Digital_Object ;
+    crm:P1_is_identified_by <https://examples.swissartresearch.net/digitalobject/91011/identifier/1> ;
+    crm:P67i_is_referred_to_by <https://examples.swissartresearch.net/digitalobject/91011/linguisticobject/1> ;
     rdfs:label "model.pkl" .
 
 # description of the trained model
-<https://resource.swissartresearch.net/prov/digitalobject/91011/linguisticobject/1> a crm:E33_Linguistic_Object ;
+<https://examples.swissartresearch.net/digitalobject/91011/linguisticobject/1> a crm:E33_Linguistic_Object ;
     crm:P190_has_symbolic_content "Image classification model trained on manually labelled BSO data." .
 
 # URL of the trained model
-<https://resource.swissartresearch.net/prov/digitalobject/91011/identifier/1> a crm:E42_Identifier ; 
+<https://examples.swissartresearch.net/digitalobject/91011/identifier/1> a crm:E42_Identifier ; 
     crm:P190_has_symbolic_content "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/models/model.pkl" ;
     crm:P2_has_type <https://vocab.getty.edu/aat/300404630> .
 
 # Notebook used to train the model
-<https://resource.swissartresearch.net/prov/software/1234> crmdig:D14_Software ;
+<https://examples.swissartresearch.net/software/1234> crmdig:D14_Software ;
     rdfs:label "model training.ipynb" ;
-    crm:P67i_is_referred_to_by <https://resource.swissartresearch.net/prov/software/1234/linguisticobject/1> .
+    crm:P67i_is_referred_to_by <https://examples.swissartresearch.net/software/1234/linguisticobject/1> .
 
 # Description of the notebook
-<https://resource.swissartresearch.net/prov/software/1234/linguisticobject/1> a crm:E33_Linguistic_Object ;
+<https://examples.swissartresearch.net/software/1234/linguisticobject/1> a crm:E33_Linguistic_Object ;
     crm:P190_has_symbolic_content "Image classification model trained on manually labelled BSO data." .
 
 # URL of the notebook
-<https://resource.swissartresearch.net/prov/software/1234/identifier/1> a crm:E42_Identifier ; 
+<https://examples.swissartresearch.net/software/1234/identifier/1> a crm:E42_Identifier ; 
     crm:P190_has_symbolic_content "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/notebooks/model%20training.ipynb" ;
     crm:P2_has_type <https://vocab.getty.edu/aat/300404630> .
 
@@ -426,8 +434,14 @@ Fields applying to any pipeline step:
             "part-of-project": "project/1234",
             "model": "digitalobject/91011",
             "has-input-data": "digitalobject/1234",
+            "code": {
+               "id": "digitalobject/121314",
+               "description": "Notebook containing examples of how to load the trained model and perform image classification.",
+               "label": "classify images.ipynb",
+               "url": "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/notebooks/classify%20images.ipynb"
+           },
             "has-output": {
-                "id": "digitalobject/101112",
+                "id": "digitalobject/151617",
                 "description": "The file where the image classification results are written.",
                 "label": "output/predictions.csv",
                 "url": "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/output/predictions.csv"
@@ -437,16 +451,70 @@ Fields applying to any pipeline step:
 }
  ```
 
+**Turtle example:**
+```turtle
+@prefix aaao: <https://ontology.swissartresearch.net/aaao/> .
+@prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix crmdig: <http://www.ics.forth.gr/isl/CRMdig/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://examples.swissartresearch.net/digitalreading/91011> a aaao:ZE17_Digital_Reading ;
+    rdfs:label "BSO image classification (prediction)" ;
+    
+    # Input data
+    crm:L10_had_input <https://examples.swissartresearch.net/digitalobject/1234> ;
+    
+    # Trained model used for prediction
+    crm:L10_had_input <https://examples.swissartresearch.net/digitalobject/91011> ;
+    
+    # Code
+    crm:L23_used_software_or_firmware <https://examples.swissartresearch.net/digitalobject/121314> ;
+    
+    # Output
+    crm:L11_had_output <https://examples.swissartresearch.net/digitalobject/151617> ;
+    
+    crm:P4_has_time-span <https://examples.swissartresearch.net/digitalreading/91011/timestamp> ;
+    crm:P9i_forms_part_of <https://examples.swissartresearch.net/project/1234>.
+
+
+    # Notebook used to classify images (new predicitons)
+    <https://examples.swissartresearch.net/digitalobject/121314> crmdig:D14_Software ;
+        rdfs:label "classify images.ipynb" ;
+        crm:P1_is_identified_by <https://examples.swissartresearch.net/digitalobject/121314/identifier/1> ;
+        crm:P67i_is_referred_to_by <https://examples.swissartresearch.net/digitalobject/121314/linguisticobject/1> .
+
+    # Description of the notebook
+    <https://examples.swissartresearch.net/digitalobject/121314/linguisticobject/1> a crm:E33_Linguistic_Object ;
+        crm:P190_has_symbolic_content "Notebook containing examples of how to load the trained model and perform image classification." .
+
+    # URL of the notebook
+    <https://examples.swissartresearch.net/digitalobject/121314/identifier/1> a crm:E42_Identifier ; 
+        crm:P190_has_symbolic_content "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/notebooks/classify%20images.ipynb" ;
+        crm:P2_has_type <https://vocab.getty.edu/aat/300404630> .
+
+    # Output data
+    <https://examples.swissartresearch.net/digitalobject/151617> crmdig:D1_Digital_Object ;
+        rdfs:label "output/predictions.csv" ;
+        crm:P1_is_identified_by <https://examples.swissartresearch.net/digitalobject/151617/identifier/1> ;
+        crm:P67i_is_referred_to_by <https://examples.swissartresearch.net/digitalobject/151617/linguisticobject/1> .
+
+    # Description of output data
+    <https://examples.swissartresearch.net/digitalobject/151617/linguisticobject/1> a crm:E33_Linguistic_Object ;
+        crm:P190_has_symbolic_content "The file where the image classification results are written." .
+
+    # URL of the output data
+    <https://examples.swissartresearch.net/digitalobject/151617/identifier/1> a crm:E42_Identifier ; 
+        crm:P190_has_symbolic_content "https://github.com/swiss-art-research-net/bso-image-classification/blob/main/output/predictions.csv" ;
+        crm:P2_has_type <https://vocab.getty.edu/aat/300404630> .
+
+    # The timestamp of the date when the prediction step of the BSO pipeline started and ended
+    <https://examples.swissartresearch.net/digitalreading/91011/timestamp> a crm:E52_Time-Span ;
+        crm:P82a_begin_of_the_begin "2023-05-12T10:15:30Z" ;
+        crm:P82b_end_of_the_end "2023-05-31T10:15:30Z" .
+```
+
 ## Types of predictions
 
 ### Classification
 
 ### Similarity
-
-## Digital objects
-
-**Description:** Any digital object that is consumed/generated/used by a digital reading pipeline.
-
-**Fields:**
-- ...
-- ...
