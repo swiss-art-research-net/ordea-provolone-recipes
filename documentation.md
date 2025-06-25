@@ -113,13 +113,18 @@ Finally, in the section [**URI templates**](#uri-templates) we describe how to c
 
 ## Digital object
 
+[Zellij link](https://zellij.takin.delving.io/docs/list/appcQruLQ0OWFHWlX?scraper=Models&selectedMenuItem=%2Fdocs%2Fdisplay%2FappcQruLQ0OWFHWlX%2FModels%3Fsearch%3DANTM.7_Digital%2BObject)
+
 **Description:** Any digital object that is consumed/generated/used by a digital reading pipeline.
 
 **Scope**: ...
 
 **Fields:**
-- ...
-- ...
+- *Identifier*
+- *Description*
+- *Label*
+- *URL*
+- *Part of dataset*
 
 ## Pipeline step
 
@@ -484,6 +489,65 @@ Finally, in the section [**URI templates**](#uri-templates) we describe how to c
 ## Predictions
 
 ### Classification
+
+**Description**: The classification of a digital object (e.g. image, text, etc.) according to a pre-defined taxonomy produced by a digital reading pipeline. 
+
+**Fields:**
+- *Class label*: The classification label assigned by the model's prediction (ANTF.5)
+- *Class label URI*: The URI where a definition of the label used can be found (ANTF.6)
+- *Target*: The digital object to be classified. (ANTF.4)
+- *Is produced by*: Links to the pipeline step (prediction) that produced the classification (ANTF.7)
+- *Confidence score*: Model's confidence in predicting a given label for the target digital object (ANTF.2)
+
+**JSON input:**
+
+```JSON
+{
+    "target": "https://resource.swissartresearch.net/artwork/nb-482132",
+    "is_produced_by": "digitalreading/91011",
+    "confidence_score": 0.017831,
+    "timestamp_begin": "2023-05-12T10:15:30Z",
+    "classification_label": "landscape"
+}
+```
+
+**Turtle output:**
+```turtle
+
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix aaao: <https://ontology.swissartresearch.net/aaao/> .
+@prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://example.swissartresearch.net/type/classification/landscape> a crm:E55_Type .
+
+<https://example.swissartresearch.net/type/classification/notlandscape> a crm:E55_Type .
+
+<https://examples.swissartresearch.net/classificatorystatus/1234> a aaao:ZE4_Classificatory_Status ;
+
+    # Target: the digital object being classified
+    aaao:ZP11_has_classificatory_subject <https://resource.swissartresearch.net/artwork/nb-482132> ; 
+     
+    # Is produced by: Links to the pipeline step (prediction) that produced the classification.
+     aaao:ZP42i_was_intentionally_initiated_by <https://examples.swissartresearch.net/digitalreading/91011> ;
+    
+    # Confidence score: Model's confidence in predicting a given label for the target digital object.
+    aaao:ZP122_has_ascribed_dimension <https://examples.swissartresearch.net/classificatorystatus/1234/confidence> ;
+
+    # Timestamp – begin: The date or date range when the classification was carried out.
+    crm:P4_has_time-span <https://examples.swissartresearch.net/classificatorystatus/1234/timestamp> ;
+    
+    # The classification label assigned by the model's prediction.
+    aaao:ZP12_ascribes_classification <https://example.swissartresearch.net/type/classification/landscape> .
+
+<https://examples.swissartresearch.net/classificatorystatus/1234/dimension> a crm:E54_Dimension ;
+    rdfs:value "0.017831"^^xsd:double .
+
+<https://examples.swissartresearch.net/classificatorystatus/1234/timestamp> a E52_Time-Span ;
+    crm:P82a_begin_of_the_begin "2023-05-12T10:15:30Z" .
+
+```
+
 
 ### Similarity
 
