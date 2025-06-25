@@ -1,61 +1,15 @@
-# Provolone documentation
+# PROVOLONE Recipes
 
-## Templates for provenance-related URIs
+Compact description of what this documentation does.
 
-**Base URI:** https://resource.swissartresearch.net/
+What are the main entities involved in a DR pipeline? 
+-  a pipeline is made of distinct [**steps**](#pipeline-step), where the output of one step often serves as output of the following one;
+- a pipeline is typically built in the context of a specific [**project**](#project), but the models and software it relies on may be reused within several pipelines across different projects;
+- a pipeline involves [**digital objects**](#digital-object) (e.g., data, machine learning models, scripts, Jupyter notebooks).
 
-**Base URI for examples:** https://examples.swissartresearch.net/
+For each of these entities, we define a *model*, consisting of semantic fields, and we provide examples (in the form of JSON intput and Turtle) of how these models and their fields should be mapped into semantic statements (RDF).
 
-URI templates for provenance entity types:
-- *project*
-    - applies to instances of: `PE35 Project`
-    - pattern: `{base URI}/project/{project id}`
-    - base URI for entity type: https://examples.swissartresearch.net/project/
-    - instance example:  https://examples.swissartresearch.net/project/1234
-- *digital reading pipeline step*
-    - applies to instances of: `ZE17 Digital Reading`
-    - pattern: `{base URI}/digitalreading/`
-    - base URI for entity type: https://examples.swissartresearch.net/digitalreading/
-    - instance example:  https://examples.swissartresearch.net/digitalreading/1234
-- *digital object*
-    - pattern: `{base URI}/digitalobject/`
-    - base URI for entity type: https://examples.swissartresearch.net/digitalobject/
-    - instance example:  https://examples.swissartresearch.net/digitalobject/1234
-- *software*
-    - pattern: `{base URI}/software/`
-    - base URI for entity type: https://examples.swissartresearch.net/software/
-    - instance example:  https://examples.swissartresearch.net/software/1234
-- *classification*
-    - pattern: `{base URI}/classificatorystatus/`
-    - base URI for entity type: https://examples.swissartresearch.net/classificatorystatus/
-    - instance example:  https://examples.swissartresearch.net/classificatorystatus/1234
-- *similarity*
-    - pattern: `{base URI}/similaritystatus/`
-    - base URI for entity type: https://examples.swissartresearch.net/similaritystatus/
-    - instance example:  https://examples.swissartresearch.net/similaritystatus/1234
-
-URI templates for entity types that represent attributes of one or more entity types (e.g. the name of a project, the identifier of a digital object, etc.):
-
-- *appellation* (name)
-    - pattern: `{base URI}/{entity type}/{id of the instance}/appellation/{appellation id}`
-    - instance example:  https://examples.swissartresearch.net/project/1234/appellation/5678
-    - applies to entity types: ...
-- *linguistic object* (description)
-    - pattern: `{base URI}/{entity type}/{id of the instance}/linguisticobject/{linguistic object id}`
-    - instance example:  https://examples.swissartresearch.net/project/1234/linguisticobject/1
-    - applies to entity types: ...
-- *identifier* (e.g. URL)
-    - ...
-- *target*
-    - pattern: `{base URI}/{entity type}/{id of the instance}/target`
-    - instance example:  https://examples.swissartresearch.net/classificatorystatus/1234/target
-    - applies to entity types: classification, similarity
-- *source*
-    - pattern: `{base URI}/{entity type}/{id of the instance}/source`
-    - instance example:  https://examples.swissartresearch.net/similaritystatus/1234/target
-    - applies to entity types: similarity
-
-
+Finally, in the section [**URI templates**](#uri-templates) we describe how to construct URIs for specific entity types.
 
 ## Project
 
@@ -87,7 +41,7 @@ URI templates for entity types that represent attributes of one or more entity t
  }
  ```
 
- **Intermediate JSON:**
+ **JSON input:**
  ```json
  {  
     // The project that constitutes the context 
@@ -106,7 +60,7 @@ URI templates for entity types that represent attributes of one or more entity t
  }
  ```
 
-**Turtle example:** the BSO project by SARI
+**Turtle ouput:** 
 (see [examples/project/bso.ttl](examples/project/bso.ttl))
 ```turtle
 @prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
@@ -157,20 +111,21 @@ URI templates for entity types that represent attributes of one or more entity t
 <https://www.wikidata.org/wiki/Q42253> a crm:E55_Type .
 ```
 
-**Claude's plain text description generated from the example above:**
-> The RDF snippet describes "Bilder der Schweiz Online (BSO)" or "Images of Switzerland," a three-year project (2020-2022) conducted at the University of Zurich. This initiative was a collaborative effort between the Swiss Art Research Infrastructure (SARI) and the lecturer for Swiss Art and Museology at the University's Institute of Art History. Florian Kräutli participated in the project as a Knowledge Graph Engineer, indicating his specialized role in developing semantic data structures. The project appears to serve as a framework for creating and implementing a digital reading pipeline, likely focused on Swiss art resources. Additional information about this initiative is available through a digital resource at https://www.sari.uzh.ch/en/Projects/bilder-der-schweiz-online.html.
-
 ## Digital object
 
 **Description:** Any digital object that is consumed/generated/used by a digital reading pipeline.
+
+**Scope**: ...
 
 **Fields:**
 - ...
 - ...
 
-## Steps of a digital reading pipeline
+## Pipeline step
 
-Fields applying to any pipeline step:
+**Description:**
+
+**Generic fields:**
  - *Type*: The type of the pipeline step (LAF.11)
  - *Label*: A label identifying the pipeline step (TBD)
  - *Description*: A brief description of the pipeline step (TBD)
@@ -197,7 +152,7 @@ Fields applying to any pipeline step:
 }
  ```
  
-### Labeling
+### Labeling step
 
 **Description**: The step in a digital reading pipeline that involves creating manually labelled examples for evaluating or training a machine learning model.
 
@@ -209,6 +164,8 @@ Fields applying to any pipeline step:
  - *Annotator*: The human annotator(s) involved in the labeling process (LAF.21)
  - *Tool*: The digital tool to perform data labeling (SEMF.133)
  - *Platform used*: The platform where a given tool is hosted and offered as a service (TBD)
+
+ **Example**: The image labelling step of the digital reading pipeline developed for the Bilder der Schweiz Online (BSO) project by SARI.
 
  **JSON schema:**
  ```json
@@ -231,7 +188,7 @@ Fields applying to any pipeline step:
 }
  ```
 
- **Intermediate JSON:**
+ **JSON input:**
  ```json
  {
     "pipeline_steps": [
@@ -261,7 +218,7 @@ Fields applying to any pipeline step:
 }
  ```
 
-**Turtle example:**
+**Turtle output:**
 ```turtle
 @prefix aaao: <https://ontology.swissartresearch.net/aaao/> .
 @prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
@@ -301,7 +258,7 @@ Fields applying to any pipeline step:
 <https://example.swissartresearch.net/type/11_1> a crm:E55_Type .
 ```
 
-### Model training
+### Model training step
 
 **Description**: The step of a digital reading pipeline that consists in training a machine learning statistical model for performing a given task, typically by means of a manually labelled dataset. 
 
@@ -312,7 +269,9 @@ Fields applying to any pipeline step:
  - *Code*: Script/notebook used to train the model. (SEMF.133)
  - *Service*: External platform used to train the model (e.g. Roboflow Train) (TBD)
 
- **Intermediate JSON:**
+ **Example**: TBD
+
+ **JSON input:**
  ```json
  {
     "pipeline_steps": [
@@ -343,7 +302,7 @@ Fields applying to any pipeline step:
 }
  ```
 
- **Turtle example:**
+ **Turtle output:**
 ```turtle
 @prefix aaao: <https://ontology.swissartresearch.net/aaao/> .
 @prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
@@ -406,9 +365,16 @@ Fields applying to any pipeline step:
     rdfs:label "URL" .
 ```
 
-### Data transformation
+### Data transformation step
 
-### Prediction
+**Description**: The step of a digital reading pipeline that consists in ...
+
+**Additional fields:**
+ - ...
+
+ **Example**: TBD
+
+### Prediction step
 
 **Description:** The step of a digital reading pipeline at which a statistical machine learning model makes predictions on unseen data.
 
@@ -420,7 +386,9 @@ Fields applying to any pipeline step:
 - *Model*: The trained model used to generate predictions (SEMF.35)
 - *API*: External API service used to obtain the predictions, as an alternative to a (local) model (TBD).
 
-**Intermediate JSON:**
+ **Example**: TBD
+
+**JSON input:**
  ```json
  {
     "pipeline_steps": [
@@ -451,7 +419,7 @@ Fields applying to any pipeline step:
 }
  ```
 
-**Turtle example:**
+**Turtle output:**
 ```turtle
 @prefix aaao: <https://ontology.swissartresearch.net/aaao/> .
 @prefix crm: <http://www.cidoc-crm.org/cidoc-crm/> .
@@ -513,8 +481,66 @@ Fields applying to any pipeline step:
         crm:P82b_end_of_the_end "2023-05-31T10:15:30Z" .
 ```
 
-## Types of predictions
+## Predictions
 
 ### Classification
 
 ### Similarity
+
+### ...
+
+## URI templates
+
+**Base URI:** https://resource.swissartresearch.net/
+
+**Base URI for examples:** https://examples.swissartresearch.net/
+
+URI templates for provenance entity types:
+- *project*
+    - applies to instances of: `PE35 Project`
+    - pattern: `{base URI}/project/{project id}`
+    - base URI for entity type: https://examples.swissartresearch.net/project/
+    - instance example:  https://examples.swissartresearch.net/project/1234
+- *digital reading pipeline step*
+    - applies to instances of: `ZE17 Digital Reading`
+    - pattern: `{base URI}/digitalreading/`
+    - base URI for entity type: https://examples.swissartresearch.net/digitalreading/
+    - instance example:  https://examples.swissartresearch.net/digitalreading/1234
+- *digital object*
+    - pattern: `{base URI}/digitalobject/`
+    - base URI for entity type: https://examples.swissartresearch.net/digitalobject/
+    - instance example:  https://examples.swissartresearch.net/digitalobject/1234
+- *software*
+    - pattern: `{base URI}/software/`
+    - base URI for entity type: https://examples.swissartresearch.net/software/
+    - instance example:  https://examples.swissartresearch.net/software/1234
+- *classification*
+    - pattern: `{base URI}/classificatorystatus/`
+    - base URI for entity type: https://examples.swissartresearch.net/classificatorystatus/
+    - instance example:  https://examples.swissartresearch.net/classificatorystatus/1234
+- *similarity*
+    - pattern: `{base URI}/similaritystatus/`
+    - base URI for entity type: https://examples.swissartresearch.net/similaritystatus/
+    - instance example:  https://examples.swissartresearch.net/similaritystatus/1234
+
+URI templates for entity types that represent attributes of one or more entity types (e.g. the name of a project, the identifier of a digital object, etc.):
+
+- *appellation* (name)
+    - pattern: `{base URI}/{entity type}/{id of the instance}/appellation/{appellation id}`
+    - instance example:  https://examples.swissartresearch.net/project/1234/appellation/5678
+    - applies to entity types: ...
+- *linguistic object* (description)
+    - pattern: `{base URI}/{entity type}/{id of the instance}/linguisticobject/{linguistic object id}`
+    - instance example:  https://examples.swissartresearch.net/project/1234/linguisticobject/1
+    - applies to entity types: ...
+- *identifier* (e.g. URL)
+    - ...
+- *target*
+    - pattern: `{base URI}/{entity type}/{id of the instance}/target`
+    - instance example:  https://examples.swissartresearch.net/classificatorystatus/1234/target
+    - applies to entity types: classification, similarity
+- *source*
+    - pattern: `{base URI}/{entity type}/{id of the instance}/source`
+    - instance example:  https://examples.swissartresearch.net/similaritystatus/1234/target
+    - applies to entity types: similarity
+
